@@ -43,12 +43,5 @@ public class S3Config {
         return s3Builder;
     }
 
-    @Bean
-    public S3Presigner presigner() {
-        return S3Presigner.builder()
-                .credentialsProvider(EnvironmentVariableCredentialsProvider.create())
-                .region(Region.AP_NORTHEAST_2)
-                .build();
-    }
 
 }
