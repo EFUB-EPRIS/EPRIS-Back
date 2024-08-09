@@ -59,7 +59,7 @@ public class FileService {
     public void deleteImage(String imageUrl) throws IOException {
         String imageName = getFileNameFromURL(imageUrl);
         try {
-            amazonS3Client.deleteObject(bucket,"post/image/"+imageName);
+            amazonS3Client.deleteObject(bucket,imageName);
         }catch (SdkClientException e){
             throw new CustomException(ErrorCode.FILE_DELETE_ERROR);
         }
