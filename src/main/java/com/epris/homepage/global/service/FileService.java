@@ -1,33 +1,24 @@
 package com.epris.homepage.global.service;
 
 import com.amazonaws.HttpMethod;
+import com.amazonaws.SdkClientException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.Headers;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
+import com.epris.homepage.global.exception.CustomException;
+import com.epris.homepage.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetObjectRequest;
-import software.amazon.awssdk.services.s3.model.RequestPayer;
-import software.amazon.awssdk.services.s3.presigner.S3Presigner;
-import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
-import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.GetUrlRequest;
-import software.amazon.awssdk.services.s3.model.RequestPayer;
 
+import java.io.IOException;
 import java.net.URL;
-import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
+
 
 @Service
 @RequiredArgsConstructor
@@ -37,30 +28,41 @@ public class FileService {
     private String bucket;
 
     private final AmazonS3 amazonS3;
+    private final AmazonS3Client amazonS3Client;
 
 
     /* presigned url 발급 */
     public String getPreSignedUrl(String fileName) throws Exception {
         GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePreSignedUrlRequest(bucket, fileName);
         URL url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
+
         return url.toString();
     }
 
     /* 파일 업로드용(PUT) presigned url 생성 */
     private GeneratePresignedUrlRequest getGeneratePreSignedUrlRequest(String bucket, String fileName) throws Exception {
+        /* 파일 이름으로 null 이 들어왔을 경우, 예외 처리 */
+        if(fileName.equals(null)) throw new CustomException(ErrorCode.INPUT_IS_NULL);
 
-        //if(fileName.equals(null)) throw new Exception(new Exception("널이 들어왔습니다"));
         GeneratePresignedUrlRequest generatePresignedUrlRequest =
                 new GeneratePresignedUrlRequest(bucket, fileName)
                         .withMethod(HttpMethod.PUT)
                         .withExpiration(getPreSignedUrlExpiration());
         generatePresignedUrlRequest.addRequestParameter(
                 Headers.S3_CANNED_ACL,
-                //CannedAccessControlList.BucketOwnerFullControl.toString());
                 CannedAccessControlList.PublicRead.toString());
-        //generatePresignedUrlRequest.addRequestParameter("x-amz-request-payer", "bucket-owner");
 
         return generatePresignedUrlRequest;
+    }
+
+    /* S3에서 파일 삭제 */
+    public void deleteImage(String imageUrl) throws IOException {
+        String imageName = getFileNameFromURL(imageUrl);
+        try {
+            amazonS3Client.deleteObject(bucket,"post/image/"+imageName);
+        }catch (SdkClientException e){
+            throw new CustomException(ErrorCode.FILE_DELETE_ERROR);
+        }
     }
 
     /* presigned url 유효 기간 설정 */
@@ -69,14 +71,12 @@ public class FileService {
         long expTimeMillis = expiration.getTime();
         expTimeMillis += 1000 * 60 * 2;
         expiration.setTime(expTimeMillis);
+
         return expiration;
     }
 
-    /* 파일 고유 ID를 생성 */
-    private String createFileId() {
-        return UUID.randomUUID().toString();
+    /* 파일 이름에서 파일 객체 식별을 위한 key 추출 */
+    public static String getFileNameFromURL(String url) {
+        return url.substring(url.lastIndexOf('/') + 1, url.length());
     }
-
-
-
 }
