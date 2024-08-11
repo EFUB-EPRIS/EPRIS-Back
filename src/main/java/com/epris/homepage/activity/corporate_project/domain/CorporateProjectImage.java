@@ -17,9 +17,9 @@ public class CorporateProjectImage {
     @Column(name = "project_img_url", nullable = false)
     private String projectImgUrl;
 
-    /*
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "corporate_project_id")
     private CorporateProject corporateProject;
-     */
+
 }
