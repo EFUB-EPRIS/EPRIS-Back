@@ -7,6 +7,8 @@ import com.epris.homepage.global.dto.ImageInfo;
 import com.epris.homepage.global.dto.ImageRequestDto;
 import com.epris.homepage.global.dto.ImageResponseDto;
 import com.epris.homepage.global.dto.ImageUrl;
+import com.epris.homepage.global.exception.CustomException;
+import com.epris.homepage.global.exception.ErrorCode;
 import com.epris.homepage.global.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -39,6 +41,16 @@ public class LogoService {
                 .body(ImageResponseDto.of(uploadNewLogoList(logoType,requestDto)));
     }
 
+    /* 타입 별 로고 목록 조회 */
+    public ResponseEntity<ImageResponseDto> findLogoListByType(String type) {
+        LogoType logoType = getLogoType(type);
+        List<CorporateLogo> logoList = logoRepository.findAllByLogoType(logoType);
+        if(logoList.isEmpty()) throw new CustomException(ErrorCode.NO_CONTENT_EXIST);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(ImageResponseDto.of(makeImageInfoDto(logoRepository.findAllByLogoType(logoType))));
+
+    }
+
 
     /* 로고 삭제 */
     public void deleteLogo(List<CorporateLogo> logoList) throws IOException {
@@ -63,5 +75,15 @@ public class LogoService {
         if(type.equals("project")) return LogoType.CORPORATE;
         else return LogoType.ALUMNI;
     }
+
+    /* imageInfo dto 생성 */
+    public List<ImageInfo> makeImageInfoDto(List<CorporateLogo> logoList){
+        List<ImageInfo> imageInfoList = new ArrayList<>();
+        for(CorporateLogo corporateLogo:logoList){
+            imageInfoList.add(ImageInfo.of(corporateLogo.getBrandId(),corporateLogo.getLogoImg()));
+        }
+        return imageInfoList;
+    }
+
 
 }
