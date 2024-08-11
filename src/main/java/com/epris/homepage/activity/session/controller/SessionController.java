@@ -20,4 +20,9 @@ public class SessionController {
                                                             @RequestBody SessionRequestDto requestDto) throws IOException {
         return sessionService.updateSession(type,requestDto);
     }
+
+    @GetMapping
+    public ResponseEntity<SessionResponseDto> findSessionBySessionType(@RequestParam("sessionType")String type){
+        return sessionService.findSessionBySessionType(type);
+    }
 }

@@ -48,6 +48,17 @@ public class SessionService {
                 .body(SessionResponseDto.of(updateSession,makeImageInfoDto(sessionImageRepository.findAllBySession(updateSession))));
     }
 
+    /* 세션의 타입으로 세션 조회 */
+    public ResponseEntity<SessionResponseDto> findSessionBySessionType(String type) {
+        SessionType sessionType = getSessionType(type);
+        Session session = findSessionByType(sessionType);
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(SessionResponseDto.of(session,makeImageInfoDto(sessionImageRepository.findAllBySession(session))));
+    }
+
+
+
     /* 세션 타입 조회 */
     public SessionType getSessionType(String type){
         if(type.equals("pr")) return SessionType.PRCASE;
@@ -88,5 +99,6 @@ public class SessionService {
         }
         return imageInfoList;
     }
+
 
 }
