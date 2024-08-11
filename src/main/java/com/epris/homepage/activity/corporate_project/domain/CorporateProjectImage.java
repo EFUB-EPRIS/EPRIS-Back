@@ -2,9 +2,11 @@ package com.epris.homepage.activity.corporate_project.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CorporateProjectImage {
     @Id
@@ -15,7 +17,9 @@ public class CorporateProjectImage {
     @Column(name = "project_img_url", nullable = false)
     private String projectImgUrl;
 
+    /*
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "corporate_project_id")
     private CorporateProject corporateProject;
+     */
 }

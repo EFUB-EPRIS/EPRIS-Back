@@ -10,6 +10,7 @@ import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.epris.homepage.global.exception.CustomException;
 import com.epris.homepage.global.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 @Component
+@Slf4j
 public class FileService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
