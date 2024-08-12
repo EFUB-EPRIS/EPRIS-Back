@@ -27,8 +27,15 @@ public class ClassInfoService {
         classInfo.updateClassinfo(requestDto.getNum(), requestDto.getPhoneNum(), requestDto.getPhoneNumInfo(), requestDto.getEmail(),
                 requestDto.getInstaLink(), requestDto.getBlogLink(), requestDto.getNewsLink(), requestDto.getAdminImg());
 
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(ClassInfoResponseDto.of(classInfo));
+        return ResponseEntity.status(HttpStatus.OK).body(ClassInfoResponseDto.of(classInfo));
+    }
+
+    /* 기수 정보 조회 */
+    public ResponseEntity<ClassInfoResponseDto> getClassInfo(){
+        /* 기수 정보 가져오기 */
+        ClassInfo classInfo = findById(1L);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ClassInfoResponseDto.of(classInfo));
     }
 
 

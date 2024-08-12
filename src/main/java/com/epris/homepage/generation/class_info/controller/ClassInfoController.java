@@ -20,4 +20,9 @@ public class ClassInfoController {
     public ResponseEntity<ClassInfoResponseDto> updateClassInfo(@RequestBody ClassInfoRequestDto requestDto) throws IOException {
         return classInfoService.updateClassInfo(requestDto);
     }
+
+    /* 기수 정보 조회 */
+    @GetMapping ResponseEntity<ClassInfoResponseDto> getClassInfo() throws IOException {
+        return classInfoService.getClassInfo();
+    }
 }
