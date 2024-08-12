@@ -1,5 +1,6 @@
 package com.epris.homepage.recruitment.service;
 
+import com.epris.homepage.global.service.FileService;
 import com.epris.homepage.recruitment.domain.Recruitment;
 import com.epris.homepage.recruitment.dto.RecruitmentRequestDto;
 import com.epris.homepage.recruitment.dto.RecruitmentResponseDto;
@@ -17,11 +18,18 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class RecruitmentService {
     private final RecruitmentRepository recruitmentRepository;
+    private final FileService fileService;
 
     /* 모집 정보 수정 */
     public ResponseEntity<RecruitmentResponseDto> updateRecruitment(RecruitmentRequestDto requestDto) throws IOException{
         /* 모집 정보 가져오기 */
         Recruitment recruitment = findById(1L);
+
+        /* 기존 파일 삭제 */
+        String doc = recruitment.getDoc();
+        String poster = recruitment.getPoster();
+        fileService.deleteImage(doc);
+        fileService.deleteImage(poster);
 
         /* 모집 정보 업데이트 */
         recruitment.updateRecruitment(requestDto.getDoc(), requestDto.getPoster(), requestDto.getNotice(),
