@@ -6,10 +6,7 @@ import com.epris.homepage.activity.corporate_project.dto.CorporateProjectRespons
 import com.epris.homepage.activity.corporate_project.service.CorporateProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -22,5 +19,10 @@ public class CorporateProjectController {
     @PostMapping
     public ResponseEntity<CorporateProjectResponseDto> updateCorporateProject(@RequestBody CorporateProjectRequestDto requestDto) throws IOException {
         return corporateProjectService.updateCorporateProject(requestDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<CorporateProjectResponseDto> findCorporateProject(){
+        return corporateProjectService.findCorporateProject();
     }
 }

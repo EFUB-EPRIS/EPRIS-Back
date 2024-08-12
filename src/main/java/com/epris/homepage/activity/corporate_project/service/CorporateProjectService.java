@@ -6,10 +6,7 @@ import com.epris.homepage.activity.corporate_project.dto.CorporateProjectRequest
 import com.epris.homepage.activity.corporate_project.dto.CorporateProjectResponseDto;
 import com.epris.homepage.activity.corporate_project.repository.CorporateProjectImageRespository;
 import com.epris.homepage.activity.corporate_project.repository.CorporateProjectRepository;
-import com.epris.homepage.activity.session.domain.SessionImage;
 import com.epris.homepage.global.dto.ImageInfo;
-import com.epris.homepage.global.dto.ImageRequestDto;
-import com.epris.homepage.global.dto.ImageResponseDto;
 import com.epris.homepage.global.dto.ImageUrl;
 import com.epris.homepage.global.exception.CustomException;
 import com.epris.homepage.global.exception.ErrorCode;
@@ -55,6 +52,14 @@ public class CorporateProjectService {
                         makeImageInfoDto(corporateProjectImageRespository.findAllByCorporateProject(updateCorporateProject))));
 
 
+    }
+
+    /* 협력 프로젝트 조회 */
+    public ResponseEntity<CorporateProjectResponseDto> findCorporateProject() {
+        CorporateProject corporateProject = findById(1L);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(CorporateProjectResponseDto.of(corporateProject,
+                        makeImageInfoDto(corporateProjectImageRespository.findAllByCorporateProject(corporateProject))));
     }
 
 
