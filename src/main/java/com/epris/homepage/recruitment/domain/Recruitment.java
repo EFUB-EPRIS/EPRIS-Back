@@ -2,9 +2,11 @@ package com.epris.homepage.recruitment.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Recruitment {
     @Id
@@ -32,4 +34,16 @@ public class Recruitment {
 
     @Column(nullable = false)
     private String orientation;
+
+    /* 모집 정보 수정 */
+    public void updateRecruitment(String doc, String poster, String notice, String deadline,
+                                  String interview, String announcement, String orientation) {
+        this.doc = doc;
+        this.poster = poster;
+        this.notice = notice;
+        this.deadline = deadline;
+        this.interview = interview;
+        this.announcement = announcement;
+        this.orientation = orientation;
+    }
 }
