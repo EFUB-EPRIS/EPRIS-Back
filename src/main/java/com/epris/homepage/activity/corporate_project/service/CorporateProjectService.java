@@ -33,11 +33,12 @@ public class CorporateProjectService {
 
     private final CorporateProjectRepository corporateProjectRepository;
     private final CorporateProjectImageRespository corporateProjectImageRespository;
+    Long CORPORATE_PROJECT_ID = 1L;
 
     /* 협력 프로젝트 수정 */
     public ResponseEntity<CorporateProjectResponseDto> updateCorporateProject(CorporateProjectRequestDto requestDto) throws IOException {
         /* 1번 프로젝트에 대한 수정만 반복될 것임 */
-        CorporateProject updateCorporateProject = findById(1L);
+        CorporateProject updateCorporateProject = findById(CORPORATE_PROJECT_ID);
 
         /* 기존 이미지 삭제 */
         deleteCorporateProjectImageList(updateCorporateProject);
@@ -56,7 +57,7 @@ public class CorporateProjectService {
 
     /* 협력 프로젝트 조회 */
     public ResponseEntity<CorporateProjectResponseDto> findCorporateProject() {
-        CorporateProject corporateProject = findById(1L);
+        CorporateProject corporateProject = findById(CORPORATE_PROJECT_ID);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(CorporateProjectResponseDto.of(corporateProject,
                         makeImageInfoDto(corporateProjectImageRespository.findAllByCorporateProject(corporateProject))));
