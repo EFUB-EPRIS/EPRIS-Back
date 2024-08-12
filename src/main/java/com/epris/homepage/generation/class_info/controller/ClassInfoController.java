@@ -22,7 +22,8 @@ public class ClassInfoController {
     }
 
     /* 기수 정보 조회 */
-    @GetMapping ResponseEntity<ClassInfoResponseDto> getClassInfo() throws IOException {
+    @GetMapping
+    public ResponseEntity<ClassInfoResponseDto> getClassInfo() throws IOException {
         return classInfoService.getClassInfo();
     }
 }
