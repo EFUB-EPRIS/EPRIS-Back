@@ -5,10 +5,7 @@ import com.epris.homepage.recruitment.dto.RecruitmentResponseDto;
 import com.epris.homepage.recruitment.service.RecruitmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -22,5 +19,11 @@ public class RecruitmentController {
     @PutMapping
     public ResponseEntity<RecruitmentResponseDto> updateRecruitment(@RequestBody RecruitmentRequestDto requestDto) throws IOException{
         return recruitmentService.updateRecruitment(requestDto);
+    }
+
+    /* 모집 정보 조회 */
+    @GetMapping
+    public ResponseEntity<RecruitmentResponseDto> getRecruitment() throws IOException{
+        return recruitmentService.getRecruitment();
     }
 }

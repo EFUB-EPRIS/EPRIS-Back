@@ -30,6 +30,14 @@ public class RecruitmentService {
         return ResponseEntity.status(HttpStatus.OK).body(RecruitmentResponseDto.of(recruitment));
     }
 
+    /* 모집 정보 수정 */
+    public ResponseEntity<RecruitmentResponseDto> getRecruitment() throws IOException{
+        /* 모집 정보 가져오기 */
+        Recruitment recruitment = findById(1L);
+
+        return ResponseEntity.status(HttpStatus.OK).body(RecruitmentResponseDto.of(recruitment));
+    }
+
     /* id로 Recruitment 조회 */
     @Transactional(readOnly = true)
     public Recruitment findById(Long id){
