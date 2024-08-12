@@ -2,9 +2,11 @@ package com.epris.homepage.generation.class_info.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ClassInfo {
     @Id
@@ -35,4 +37,17 @@ public class ClassInfo {
 
     @Column(name = "admin_img", nullable = false)
     private String adminImg;
+
+    /* 기수 정보 내용 수정 */
+    public void updateClassinfo(String num, String phoneNum, String phoneNumInfo, String email,
+                                String instaLink, String blogLink, String newsLink, String adminImg) {
+        this.num = num;
+        this.phoneNum = phoneNum;
+        this.phoneNumInfo = phoneNumInfo;
+        this.email = email;
+        this.instaLink = instaLink;
+        this.blogLink = blogLink;
+        this.newsLink = newsLink;
+        this.adminImg = adminImg;
+    }
 }
