@@ -2,9 +2,12 @@ package com.epris.homepage.activity.session.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SessionImage {
     @Id
@@ -18,4 +21,10 @@ public class SessionImage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id")
     private Session session;
+
+    @Builder
+    public SessionImage(String sessionImgUrl, Session session){
+        this.SessionImgUrl = sessionImgUrl;
+        this.session = session;
+    }
 }
