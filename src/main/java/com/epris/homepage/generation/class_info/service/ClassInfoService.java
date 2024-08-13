@@ -4,6 +4,8 @@ import com.epris.homepage.generation.class_info.domain.ClassInfo;
 import com.epris.homepage.generation.class_info.dto.ClassInfoRequestDto;
 import com.epris.homepage.generation.class_info.dto.ClassInfoResponseDto;
 import com.epris.homepage.generation.class_info.repository.ClassInfoRepository;
+import com.epris.homepage.global.exception.CustomException;
+import com.epris.homepage.global.exception.ErrorCode;
 import com.epris.homepage.global.service.FileService;
 import com.epris.homepage.global.service.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +50,6 @@ public class ClassInfoService {
     /* id로 ClassInfo 조회 */
     @Transactional(readOnly = true)
     public ClassInfo findById(Long id) {
-        return classInfoRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("기수 정보가 없습니다."));
+        return classInfoRepository.findById(id).orElseThrow(()-> new CustomException(ErrorCode.NO_CONTENT_EXIST));
     }
 }
