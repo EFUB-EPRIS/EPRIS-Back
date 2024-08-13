@@ -1,18 +1,25 @@
 package com.epris.homepage.activity.corporate_project.service;
 
+import com.epris.homepage.activity.corporate_project.domain.CorporateProject;
 import com.epris.homepage.activity.corporate_project.domain.CorporateProjectImage;
-import com.epris.homepage.activity.corporate_project.repository.CorporateProjectLogoRespository;
-import com.epris.homepage.global.dto.ImageRequestDto;
-import com.epris.homepage.global.dto.ImageResponseDto;
+import com.epris.homepage.activity.corporate_project.dto.CorporateProjectRequestDto;
+import com.epris.homepage.activity.corporate_project.dto.CorporateProjectResponseDto;
+import com.epris.homepage.activity.corporate_project.repository.CorporateProjectImageRespository;
+import com.epris.homepage.activity.corporate_project.repository.CorporateProjectRepository;
+import com.epris.homepage.global.dto.ImageInfo;
+import com.epris.homepage.global.dto.ImageUrl;
+import com.epris.homepage.global.exception.CustomException;
+import com.epris.homepage.global.exception.ErrorCode;
 import com.epris.homepage.global.service.FileService;
+import com.epris.homepage.global.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import software.amazon.awssdk.services.s3.endpoints.internal.Value;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,29 +28,70 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CorporateProjectService {
 
-    private final CorporateProjectLogoRespository corporateProjectLogoRespository;
     private final FileService fileService;
-    /* 프로젝트 로고 업로드 */
-    public ResponseEntity<ImageResponseDto> uploadProjectLogo(ImageRequestDto requestDto) throws IOException {
-        /* 기존 이미지 삭제 */
-        List<CorporateProjectImage> oldImageList = corporateProjectLogoRespository.findAll();
-        deleteProjectLogo(oldImageList);
+    private final ImageService imageService;
 
-        /* 새로운 이미지 저장 */
+    private final CorporateProjectRepository corporateProjectRepository;
+    private final CorporateProjectImageRespository corporateProjectImageRespository;
+    Long CORPORATE_PROJECT_ID = 1L;
+
+    /* 협력 프로젝트 수정 */
+    public ResponseEntity<CorporateProjectResponseDto> updateCorporateProject(CorporateProjectRequestDto requestDto) throws IOException {
+        /* 1번 프로젝트에 대한 수정만 반복될 것임 */
+        CorporateProject updateCorporateProject = findById(CORPORATE_PROJECT_ID);
+
+        /* 기존 이미지 삭제 */
+        deleteCorporateProjectImageList(updateCorporateProject);
+        imageService.deleteImageList(requestDto.getImageUrlListToDelete());
+
+        /* 세션 업데이트 */
+        updateCorporateProject.update(requestDto.getProjectInfo());
+        saveImageList(updateCorporateProject,requestDto.getImageUrlList());
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(null);
+                .body(CorporateProjectResponseDto.of(updateCorporateProject,
+                        makeImageInfoDto(corporateProjectImageRespository.findAllByCorporateProject(updateCorporateProject))));
+
+
+    }
+
+    /* 협력 프로젝트 조회 */
+    public ResponseEntity<CorporateProjectResponseDto> findCorporateProject() {
+        CorporateProject corporateProject = findById(CORPORATE_PROJECT_ID);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(CorporateProjectResponseDto.of(corporateProject,
+                        makeImageInfoDto(corporateProjectImageRespository.findAllByCorporateProject(corporateProject))));
     }
 
 
-
-    /* 프로젝트 로고 삭제 */
-    public void deleteProjectLogo(List<CorporateProjectImage> projectImageList) throws IOException {
-        if(!projectImageList.isEmpty()){
-            for(CorporateProjectImage projectImage : projectImageList){
-                fileService.deleteImage(projectImage.getProjectImgUrl());
-                corporateProjectLogoRespository.delete(projectImage);
-            }
+    /* 협력 프로젝트의 모든 이미지 삭제 */
+    private void deleteCorporateProjectImageList(CorporateProject corporateProject) throws IOException {
+        List<CorporateProjectImage> corporateProjectImageList = corporateProjectImageRespository.findAllByCorporateProject(corporateProject);
+        for(CorporateProjectImage corporateProjectImage : corporateProjectImageList){
+            fileService.deleteImage(corporateProjectImage.getProjectImgUrl());
+            corporateProjectImageRespository.delete(corporateProjectImage);
         }
     }
 
+    /* Id 로 프로젝트 조회 */
+    public CorporateProject findById(Long id){
+        return corporateProjectRepository.findById(id)
+                .orElseThrow(()->new CustomException(ErrorCode.NO_CONTENT_EXIST));
+    }
+
+    /* 프로젝트의 새로운 이미지 저장 */
+    public void saveImageList(CorporateProject corporateProject, List<ImageUrl> imageUrlList){
+        for(ImageUrl imageUrl : imageUrlList){
+            corporateProjectImageRespository.save(new CorporateProjectImage(corporateProject,imageUrl.getImageUrl()));
+        }
+    }
+
+    /* imageInfo dto 생성 */
+    public List<ImageInfo> makeImageInfoDto(List<CorporateProjectImage> imageList){
+        List<ImageInfo> imageInfoList = new ArrayList<>();
+        for(CorporateProjectImage corporateProjectImage : imageList){
+            imageInfoList.add(ImageInfo.of(corporateProjectImage.getCorporateProjectImgId(), corporateProjectImage.getProjectImgUrl()));
+        }
+        return imageInfoList;
+    }
 }

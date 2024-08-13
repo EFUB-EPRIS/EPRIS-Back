@@ -2,6 +2,7 @@ package com.epris.homepage.activity.corporate_project.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -21,5 +22,11 @@ public class CorporateProjectImage {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "corporate_project_id")
     private CorporateProject corporateProject;
+
+    @Builder
+    public  CorporateProjectImage(CorporateProject corporateProject, String projectImgUrl){
+        this.projectImgUrl = projectImgUrl;
+        this.corporateProject = corporateProject;
+    }
 
 }
