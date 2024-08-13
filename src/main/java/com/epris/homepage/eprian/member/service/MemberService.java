@@ -74,5 +74,13 @@ public class MemberService {
         numRepository.save(new Num(num));
     }
 
-
+    /* 학회원 삭제 */
+    public ResponseEntity deleteMember(Long memberId) throws IOException {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(()->new CustomException(ErrorCode.NO_CONTENT_EXIST));
+        fileService.deleteImage(member.getProfileImg());
+        memberRepository.delete(member);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("삭제했습니다.");
+    }
 }
