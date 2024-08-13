@@ -71,6 +71,23 @@ public class MemberService {
 
     }
 
+    /* 운영진 학회원 목록 조회 */
+    public ResponseEntity<List<MemberResponseDto>> findExecutives() {
+        List<MemberResponseDto> responseDtoList = new ArrayList<>();
+        responseDtoList.add(MemberResponseDto.of(findMemberByPosition("학회장")));
+        responseDtoList.add(MemberResponseDto.of(findMemberByPosition("기획부장")));
+        responseDtoList.add(MemberResponseDto.of(findMemberByPosition("홍보부장")));
+        responseDtoList.add(MemberResponseDto.of(findMemberByPosition("운영부장")));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(responseDtoList);
+    }
+
+    /* 직위로 학회원 조회 */
+    public Member findMemberByPosition(String position){
+        return memberRepository.findAllByPositionAndIsActive(position,Boolean.TRUE)
+                .get(0);
+    }
     /* 기존 학회원 정보 수정 */
     public Member updateMember(MemberRequestDto requestDto) throws IOException {
         /* 기존 프로필 이미지 s3 에서 삭제 */

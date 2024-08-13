@@ -30,6 +30,12 @@ public class MemberController {
         return memberService.findMemberListByNum();
     }
 
+    /* 운영진 학회원 목록 조회 */
+    @GetMapping("/executives")
+    public ResponseEntity<List<MemberResponseDto>> findExecutives(){
+        return memberService.findExecutives();
+    }
+
 
     /* 학회원 정보 삭제 */
     @DeleteMapping("/{memberId}")

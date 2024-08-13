@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findAllByNum(Num num);
+    List<Member> findAllByPositionAndIsActive(String position,Boolean isActive);
 }
