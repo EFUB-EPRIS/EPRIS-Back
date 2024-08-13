@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/networks")
@@ -17,5 +19,10 @@ public class NetworkController {
     @PostMapping
     public ResponseEntity<NetworkResponseDto> updateNetwork(@RequestParam("type")String type, @RequestBody NetworkReqeustDto reqeustDto){
         return networkService.updateNetwork(type,reqeustDto);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<NetworkResponseDto>>findNetworkList(){
+        return networkService.findNetworkList();
     }
 }

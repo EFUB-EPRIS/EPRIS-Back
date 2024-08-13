@@ -17,7 +17,7 @@ public class Network {
     @Enumerated(EnumType.STRING)
     private NetworkType networkType;
 
-    @Column(name = "network_img", updatable = false)
+    @Column(name = "network_img")
     private String networkImg;
 
     @Column(name = "network_info", updatable = false, columnDefinition = "TEXT")
