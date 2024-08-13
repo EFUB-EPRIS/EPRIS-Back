@@ -2,6 +2,7 @@ package com.epris.homepage.eprian.member.service;
 
 import com.epris.homepage.eprian.member.domain.Member;
 import com.epris.homepage.eprian.member.domain.Num;
+import com.epris.homepage.eprian.member.dto.MemberNumResponseDto;
 import com.epris.homepage.eprian.member.dto.MemberRequestDto;
 import com.epris.homepage.eprian.member.dto.MemberResponseDto;
 import com.epris.homepage.eprian.member.repository.MemberRepository;
@@ -16,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -55,10 +58,23 @@ public class MemberService {
                 requestDto.getProfileUrl(), requestDto.getIsActive(), num));
     }
 
+    /* 기수별 모든 학회원 목록 조회 */
+    public ResponseEntity<List<MemberNumResponseDto>> findMemberListByNum() {
+        List<Num> numList = numRepository.findAll();
+        List<MemberNumResponseDto> memberNumResponseDtoList = new ArrayList<>();
+        for(Num num : numList){
+            List<Member> memberList = memberRepository.findAllByNum(num);
+            memberNumResponseDtoList.add(MemberNumResponseDto.of(num,memberList));
+        }
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(memberNumResponseDtoList);
+
+    }
+
     /* 기존 학회원 정보 수정 */
     public Member updateMember(MemberRequestDto requestDto) throws IOException {
         /* 기존 프로필 이미지 s3 에서 삭제 */
-        fileService.deleteImage(requestDto.getProfileUrl());
+        //fileService.deleteImage(requestDto.getProfileUrl());
 
         Member member = memberRepository.findById(requestDto.getMemberId())
                 .orElseThrow(()->new CustomException(ErrorCode.NO_CONTENT_EXIST));
