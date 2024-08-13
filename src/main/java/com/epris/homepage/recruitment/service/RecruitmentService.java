@@ -1,5 +1,7 @@
 package com.epris.homepage.recruitment.service;
 
+import com.epris.homepage.global.exception.CustomException;
+import com.epris.homepage.global.exception.ErrorCode;
 import com.epris.homepage.global.service.FileService;
 import com.epris.homepage.recruitment.domain.Recruitment;
 import com.epris.homepage.recruitment.dto.RecruitmentRequestDto;
@@ -49,6 +51,6 @@ public class RecruitmentService {
     /* id로 Recruitment 조회 */
     @Transactional(readOnly = true)
     public Recruitment findById(Long id){
-        return recruitmentRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("모집 정보가 없습니다."));
+        return recruitmentRepository.findById(id).orElseThrow(()-> new CustomException(ErrorCode.NO_CONTENT_EXIST));
     }
 }
