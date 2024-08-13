@@ -2,9 +2,12 @@ package com.epris.homepage.eprian.member.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member {
     @Id
@@ -15,8 +18,8 @@ public class Member {
     @Column(nullable = false)
     private String name;
 
-    @Enumerated(EnumType.STRING)
-    private Position position;
+    @Column(nullable = false)
+    private String position;
 
     @Column(name = "member_info", nullable = false)
     private String memberInfo;
@@ -30,4 +33,23 @@ public class Member {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "num_id")
     private Num num;
+
+    @Builder
+    public Member(String name,String position, String memberInfo, String profileImg, Boolean isActive, Num num){
+        this.name = name;
+        this.position = position;
+        this.memberInfo = memberInfo;
+        this.profileImg = profileImg;
+        this.isActive = isActive;
+        this.num = num;
+    }
+
+    public void update(String name, String position, String memberInfo, String profileImg, Boolean isActive, Num num){
+        this.name = name;
+        this.position = position;
+        this.memberInfo = memberInfo;
+        this.profileImg = profileImg;
+        this.isActive = isActive;
+        this.num = num;
+    }
 }
