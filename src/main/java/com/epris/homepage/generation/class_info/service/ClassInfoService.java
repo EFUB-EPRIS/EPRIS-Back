@@ -4,6 +4,10 @@ import com.epris.homepage.generation.class_info.domain.ClassInfo;
 import com.epris.homepage.generation.class_info.dto.ClassInfoRequestDto;
 import com.epris.homepage.generation.class_info.dto.ClassInfoResponseDto;
 import com.epris.homepage.generation.class_info.repository.ClassInfoRepository;
+import com.epris.homepage.global.exception.CustomException;
+import com.epris.homepage.global.exception.ErrorCode;
+import com.epris.homepage.global.service.FileService;
+import com.epris.homepage.global.service.ImageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +21,16 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ClassInfoService {
     private final ClassInfoRepository classInfoRepository;
+    private final FileService fileService;
 
     /* 기수 정보 수정 */
     public ResponseEntity<ClassInfoResponseDto> updateClassInfo(ClassInfoRequestDto requestDto) throws IOException {
         /* 기수 정보 가져오기 */
         ClassInfo classInfo = findById(1L);
+
+        /* 기존 이미지 삭제 */
+        String adminImg = classInfo.getAdminImg();
+        fileService.deleteImage(adminImg);
 
         /* 기수 정보 업데이트 */
         classInfo.updateClassinfo(requestDto.getNum(), requestDto.getPhoneNum(), requestDto.getPhoneNumInfo(), requestDto.getEmail(),
@@ -38,10 +47,9 @@ public class ClassInfoService {
         return ResponseEntity.status(HttpStatus.OK).body(ClassInfoResponseDto.of(classInfo));
     }
 
-
     /* id로 ClassInfo 조회 */
     @Transactional(readOnly = true)
     public ClassInfo findById(Long id) {
-        return classInfoRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("기수 정보가 없습니다."));
+        return classInfoRepository.findById(id).orElseThrow(()-> new CustomException(ErrorCode.NO_CONTENT_EXIST));
     }
 }
