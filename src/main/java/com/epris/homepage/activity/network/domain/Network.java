@@ -2,9 +2,11 @@ package com.epris.homepage.activity.network.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Network {
     @Id
@@ -15,9 +17,15 @@ public class Network {
     @Enumerated(EnumType.STRING)
     private NetworkType networkType;
 
-    @Column(name = "network_img", updatable = false)
+    @Column(name = "network_img")
     private String networkImg;
 
-    @Column(name = "network_info", updatable = false, columnDefinition = "TEXT")
+    @Column(name = "network_info", columnDefinition = "TEXT")
     private String networkInfo;
+
+    /* 네트워크 정보 수정 */
+    public void update(String networkImg, String networkInfo){
+        this.networkImg = networkImg;
+        this.networkInfo = networkInfo;
+    }
 }
