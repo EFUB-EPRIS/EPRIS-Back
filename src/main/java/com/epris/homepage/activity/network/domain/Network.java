@@ -20,7 +20,7 @@ public class Network {
     @Column(name = "network_img")
     private String networkImg;
 
-    @Column(name = "network_info", updatable = false, columnDefinition = "TEXT")
+    @Column(name = "network_info", columnDefinition = "TEXT")
     private String networkInfo;
 
     /* 네트워크 정보 수정 */

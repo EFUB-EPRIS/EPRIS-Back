@@ -17,7 +17,7 @@ public class Session {
     @Enumerated(EnumType.STRING)
     private SessionType sessionType;
 
-    @Column(name = "session_info", updatable = false, columnDefinition = "TEXT")
+    @Column(name = "session_info", columnDefinition = "TEXT")
     private String sessionInfo;
 
 
