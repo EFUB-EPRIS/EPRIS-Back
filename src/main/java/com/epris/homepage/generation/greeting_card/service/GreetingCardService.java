@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -63,6 +65,19 @@ public class GreetingCardService {
         greetingCardRepository.delete(card);
 
         return ResponseEntity.status(HttpStatus.OK).body("성공적으로 삭제되었습니다.");
+    }
+
+    /* 그리팅 카드 목록 조회 */
+    public ResponseEntity<List<GreetingCardResponseDto>> getAllCards(){
+        /* 모든 카드 리스트 가져오기 */
+        List<GreetingCard> cards = greetingCardRepository.findAll();
+
+        /* 카드 객체들을 ResponseDto로 변환 */
+        List<GreetingCardResponseDto> cardResponseDtos = cards.stream()
+                .map(GreetingCardResponseDto::of)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(cardResponseDtos);
     }
 
     /* id로 그리팅 카드 조회 */
