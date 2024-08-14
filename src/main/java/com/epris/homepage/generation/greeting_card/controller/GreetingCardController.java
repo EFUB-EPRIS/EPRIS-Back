@@ -7,10 +7,7 @@ import com.epris.homepage.generation.greeting_card.service.GreetingCardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,8 +18,6 @@ public class GreetingCardController {
     /* 그리팅 카드 생성 */
     @PostMapping
     public ResponseEntity<GreetingCardResponseDto> createCard(@RequestBody GreetingCardRequestDto requestDto) {
-        GreetingCard card = greetingCardService.createCard(requestDto);
-        GreetingCardResponseDto responseDto = GreetingCardResponseDto.of(card);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+        return greetingCardService.createCard(requestDto);
     }
 }
