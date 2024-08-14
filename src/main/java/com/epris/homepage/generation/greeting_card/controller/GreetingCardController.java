@@ -29,4 +29,10 @@ public class GreetingCardController {
                                                               @RequestBody GreetingCardRequestDto requestDto) throws IOException {
         return greetingCardService.updateCard(card_id, requestDto);
     }
+
+    /* 그리팅 카드 삭제 */
+    @DeleteMapping("{card_id}")
+    public ResponseEntity<String> deleteCard(@PathVariable Long card_id) throws IOException{
+        return greetingCardService.deleteCard(card_id);
+    }
 }

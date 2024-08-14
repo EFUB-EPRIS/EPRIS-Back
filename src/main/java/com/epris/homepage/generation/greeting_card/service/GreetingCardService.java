@@ -50,6 +50,21 @@ public class GreetingCardService {
         return ResponseEntity.status(HttpStatus.OK).body(GreetingCardResponseDto.of(card));
     }
 
+    /* 그리팅 카드 삭제 */
+    public ResponseEntity<String> deleteCard(Long cardId) throws IOException {
+        /* 해당 id 카드 가져오기 */
+        GreetingCard card = findById(cardId);
+
+        /* 카드 이미지 삭제 */
+        String cardImg = card.getCardImg();
+        fileService.deleteImage(cardImg);
+
+        /* 그리팅 카드 삭제 */
+        greetingCardRepository.delete(card);
+
+        return ResponseEntity.status(HttpStatus.OK).body("성공적으로 삭제되었습니다.");
+    }
+
     /* id로 그리팅 카드 조회 */
     @Transactional(readOnly = true)
     public GreetingCard findById(Long cardId){
