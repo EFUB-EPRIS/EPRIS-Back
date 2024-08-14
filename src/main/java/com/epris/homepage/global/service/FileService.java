@@ -6,6 +6,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.Headers;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.epris.homepage.global.exception.CustomException;
 import com.epris.homepage.global.exception.ErrorCode;
@@ -17,7 +18,10 @@ import org.springframework.stereotype.Service;
 
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 
@@ -28,6 +32,8 @@ import java.util.Date;
 public class FileService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
+    @Value("${cloud.aws.region.static}")
+    private String region;
 
     private final AmazonS3 amazonS3;
     private final AmazonS3Client amazonS3Client;
@@ -61,7 +67,8 @@ public class FileService {
     public void deleteImage(String imageUrl) throws IOException {
         String imageName = getFileNameFromURL(imageUrl);
         try {
-            amazonS3Client.deleteObject(bucket,imageName);
+            if(!amazonS3Client.doesObjectExist(bucket,imageName)) throw new CustomException(ErrorCode.NO_CONTENT_EXIST);
+            amazonS3Client.deleteObject(new DeleteObjectRequest(bucket,imageName));
         }catch (SdkClientException e){
             throw new CustomException(ErrorCode.FILE_DELETE_ERROR);
         }
@@ -78,7 +85,10 @@ public class FileService {
     }
 
     /* 파일 이름에서 파일 객체 식별을 위한 key 추출 */
-    public static String getFileNameFromURL(String url) {
-        return url.substring(url.lastIndexOf('/') + 1, url.length());
+    public static String getFileNameFromURL(String url) throws MalformedURLException {
+        URL urlObj = new URL(url);
+        String path = urlObj.getPath();
+        /* url 디코딩 */
+        return URLDecoder.decode(path.substring(path.lastIndexOf('/') + 1), StandardCharsets.UTF_8);
     }
 }
