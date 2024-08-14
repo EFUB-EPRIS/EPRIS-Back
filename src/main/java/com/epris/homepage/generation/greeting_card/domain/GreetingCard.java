@@ -34,4 +34,12 @@ public class GreetingCard {
         this.introduce = introduce;
         this.cardImg = cardImg;
     }
+
+    /* 그리팅 카드 내용 수정 */
+    public void updateCard(String name, String position, String introduce, String cardImg) {
+        this.name = name;
+        this.position = position;
+        this.introduce = introduce;
+        this.cardImg = cardImg;
+    }
 }

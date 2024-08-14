@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/cards")
@@ -19,5 +21,12 @@ public class GreetingCardController {
     @PostMapping
     public ResponseEntity<GreetingCardResponseDto> createCard(@RequestBody GreetingCardRequestDto requestDto) {
         return greetingCardService.createCard(requestDto);
+    }
+
+    /* 그리팅 카드 수정 */
+    @PutMapping("{card_id}")
+    public ResponseEntity<GreetingCardResponseDto> updateCard(@PathVariable Long card_id,
+                                                              @RequestBody GreetingCardRequestDto requestDto) throws IOException {
+        return greetingCardService.updateCard(card_id, requestDto);
     }
 }
