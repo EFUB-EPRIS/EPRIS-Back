@@ -118,6 +118,15 @@ public class MemberService {
                 .body(memberList.stream().map(MemberResponseDto::of).collect(Collectors.toList()));
     }
 
+    /* 기수별 수료 학회원 목록 조회 */
+    public ResponseEntity<List<MemberResponseDto>> findAlumniMemberListByNum(String num) {
+        Num findNum = numRepository.findByNumInfo(num);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(memberRepository.findAllByNumAndIsActive(findNum,Boolean.FALSE)
+                        .stream().map(MemberResponseDto::of).collect(Collectors.toList()));
+    }
+
+
     /* 새로운 기수 생성 */
     public void createNum(String num){
         numRepository.save(new Num(num));
@@ -133,5 +142,4 @@ public class MemberService {
         return ResponseEntity.status(HttpStatus.OK)
                 .body("삭제했습니다.");
     }
-
 }

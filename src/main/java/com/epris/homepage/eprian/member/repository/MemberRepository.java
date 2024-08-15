@@ -10,4 +10,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
     List<Member> findAllByNum(Num num);
     List<Member> findAllByPositionAndIsActive(String position,Boolean isActive);
     List<Member> findAllByIsActive(Boolean isActive);
+    List<Member> findAllByNumAndIsActive(Num num, Boolean isActive);
 }

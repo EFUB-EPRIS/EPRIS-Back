@@ -42,6 +42,12 @@ public class MemberController {
         return memberService.findActiveMemberList();
     }
 
+    /* 기수별 수료 학회원 목록 조회 */
+    @GetMapping("/alumni")
+    public ResponseEntity<List<MemberResponseDto>> findAlumniMemberListByNum(@RequestParam("num")String num){
+        return memberService.findAlumniMemberListByNum(num);
+    }
+
 
     /* 학회원 정보 삭제 */
     @DeleteMapping("/{memberId}")
