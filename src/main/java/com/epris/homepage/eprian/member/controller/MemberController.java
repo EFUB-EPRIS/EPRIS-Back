@@ -36,6 +36,12 @@ public class MemberController {
         return memberService.findExecutives();
     }
 
+    /* 활동중인 학회원 목록 조회 */
+    @GetMapping("/isActive")
+    public ResponseEntity<List<MemberResponseDto>> findActiveMemberList(){
+        return memberService.findActiveMemberList();
+    }
+
 
     /* 학회원 정보 삭제 */
     @DeleteMapping("/{memberId}")
