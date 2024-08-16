@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -74,24 +75,24 @@ public class MemberService {
     /* 운영진 학회원 목록 조회 */
     public ResponseEntity<List<MemberResponseDto>> findExecutives() {
         List<MemberResponseDto> responseDtoList = new ArrayList<>();
-        responseDtoList.add(MemberResponseDto.of(findMemberByPosition("학회장")));
-        responseDtoList.add(MemberResponseDto.of(findMemberByPosition("기획부장")));
-        responseDtoList.add(MemberResponseDto.of(findMemberByPosition("홍보부장")));
-        responseDtoList.add(MemberResponseDto.of(findMemberByPosition("운영부장")));
+        responseDtoList.addAll(findMemberByPosition("학회장").stream().map(MemberResponseDto::of).collect(Collectors.toList()));
+        responseDtoList.addAll(findMemberByPosition("기획부장").stream().map(MemberResponseDto::of).collect(Collectors.toList()));
+        responseDtoList.addAll(findMemberByPosition("홍보부장").stream().map(MemberResponseDto::of).collect(Collectors.toList()));
+        responseDtoList.addAll(findMemberByPosition("운영부장").stream().map(MemberResponseDto::of).collect(Collectors.toList()));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseDtoList);
     }
 
     /* 직위로 학회원 조회 */
-    public Member findMemberByPosition(String position){
-        return memberRepository.findAllByPositionAndIsActive(position,Boolean.TRUE)
-                .get(0);
+    public List<Member> findMemberByPosition(String position){
+        return memberRepository.findAllByPositionAndIsActive(position,Boolean.TRUE);
     }
+
     /* 기존 학회원 정보 수정 */
     public Member updateMember(MemberRequestDto requestDto) throws IOException {
         /* 기존 프로필 이미지 s3 에서 삭제 */
-        //fileService.deleteImage(requestDto.getProfileUrl());
+        fileService.deleteImage(requestDto.getProfileUrl());
 
         Member member = memberRepository.findById(requestDto.getMemberId())
                 .orElseThrow(()->new CustomException(ErrorCode.NO_CONTENT_EXIST));
@@ -102,10 +103,35 @@ public class MemberService {
         return member;
     }
 
+    /* 현재 활동중인 학회원 목록 조회 */
+    public ResponseEntity<List<MemberResponseDto>> findActiveMemberList() {
+        /* 현재 활동중인 학회원 목록 */
+        List<Member> memberList = memberRepository.findAllByIsActive(Boolean.TRUE);
+
+        /* 목록에서 운영진 학회원 제외 */
+        memberList.removeAll(findMemberByPosition("학회장"));
+        memberList.removeAll(findMemberByPosition("기획부장"));
+        memberList.removeAll(findMemberByPosition("홍보부장"));
+        memberList.removeAll(findMemberByPosition("운영부장"));
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(memberList.stream().map(MemberResponseDto::of).collect(Collectors.toList()));
+    }
+
+    /* 기수별 수료 학회원 목록 조회 */
+    public ResponseEntity<List<MemberResponseDto>> findAlumniMemberListByNum(String num) {
+        Num findNum = numRepository.findByNumInfo(num);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(memberRepository.findAllByNumAndIsActive(findNum,Boolean.FALSE)
+                        .stream().map(MemberResponseDto::of).collect(Collectors.toList()));
+    }
+
+
     /* 새로운 기수 생성 */
     public void createNum(String num){
         numRepository.save(new Num(num));
     }
+
 
     /* 학회원 삭제 */
     public ResponseEntity deleteMember(Long memberId) throws IOException {
