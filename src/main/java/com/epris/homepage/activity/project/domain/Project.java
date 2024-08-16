@@ -2,9 +2,12 @@ package com.epris.homepage.activity.project.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Project {
     @Id
@@ -17,4 +20,10 @@ public class Project {
 
     @Column(nullable = false, columnDefinition = "TEXT")
     private String info;
+
+    @Builder
+    public Project(String year, String info) {
+        this.year = year;
+        this.info = info;
+    }
 }
