@@ -42,6 +42,17 @@ public class ProjectService {
         return ResponseEntity.status(HttpStatus.OK).body(ProjectResponseDto.of(project));
     }
 
+    /* 프로젝트 삭제 */
+    public ResponseEntity<String> deleteProject(Long projectId){
+        /* 해당 id 프로젝트 가져오기 */
+        Project project = findById(projectId);
+
+        /* 프로젝트 삭제 */
+        projectRepository.delete(project);
+
+        return ResponseEntity.status(HttpStatus.OK).body("성공적으로 삭제되었습니다.");
+    }
+
     /* id로 프로젝트 조회 */
     @Transactional(readOnly = true)
     public Project findById(Long projectId){

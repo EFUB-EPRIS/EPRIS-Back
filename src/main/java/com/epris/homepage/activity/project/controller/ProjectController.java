@@ -26,4 +26,10 @@ public class ProjectController {
         return projectService.updateProject(project_id, requestDto);
 
     }
+
+    /* 프로젝트 삭제 */
+    @DeleteMapping("{project_id}")
+    public ResponseEntity<String> deleteProject(@PathVariable Long project_id){
+        return projectService.deleteProject(project_id);
+    }
 }
