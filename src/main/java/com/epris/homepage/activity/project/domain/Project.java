@@ -26,4 +26,10 @@ public class Project {
         this.year = year;
         this.info = info;
     }
+
+    /* 프로젝트 내용 수정 */
+    public void  updateProject(String year, String info) {
+        this.year = year;
+        this.info = info;
+    }
 }

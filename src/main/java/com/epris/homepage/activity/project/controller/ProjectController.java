@@ -5,14 +5,11 @@ import com.epris.homepage.activity.project.dto.ProjectResponseDto;
 import com.epris.homepage.activity.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/project")
+@RequestMapping("/projects")
 public class ProjectController {
     private final ProjectService projectService;
 
@@ -20,5 +17,13 @@ public class ProjectController {
     @PostMapping
     public ResponseEntity<ProjectResponseDto> createProject(@RequestBody ProjectRequestDto requestDto){
         return projectService.createProject(requestDto);
+    }
+
+    /* 프로젝트 수정 */
+    @PutMapping("{project_id}")
+    public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable Long project_id,
+                                                            @RequestBody ProjectRequestDto requestDto){
+        return projectService.updateProject(project_id, requestDto);
+
     }
 }
