@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/projects")
@@ -24,12 +26,17 @@ public class ProjectController {
     public ResponseEntity<ProjectResponseDto> updateProject(@PathVariable Long project_id,
                                                             @RequestBody ProjectRequestDto requestDto){
         return projectService.updateProject(project_id, requestDto);
-
     }
 
     /* 프로젝트 삭제 */
     @DeleteMapping("{project_id}")
     public ResponseEntity<String> deleteProject(@PathVariable Long project_id){
         return projectService.deleteProject(project_id);
+    }
+
+    /* 프로젝트 목록 조회 */
+    @GetMapping
+    public ResponseEntity<List<ProjectResponseDto>> getAllProjects(){
+        return projectService.getAllProject();
     }
 }

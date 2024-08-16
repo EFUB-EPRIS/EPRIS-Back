@@ -13,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
@@ -51,6 +54,19 @@ public class ProjectService {
         projectRepository.delete(project);
 
         return ResponseEntity.status(HttpStatus.OK).body("성공적으로 삭제되었습니다.");
+    }
+
+    /* 프로젝트 목록 조회 */
+    public ResponseEntity<List<ProjectResponseDto>> getAllProject(){
+        /* 모든 프로젝트 리스트 가져오기 */
+        List<Project> projects = projectRepository.findAll();
+
+        /* 프로젝트 객체들을 ResponseDto로 변환 */
+        List<ProjectResponseDto> projectResponseDtos = projects.stream()
+                .map(ProjectResponseDto::of)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(projectResponseDtos);
     }
 
     /* id로 프로젝트 조회 */
