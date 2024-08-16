@@ -29,7 +29,6 @@ public class SessionService {
     private final SessionImageRepository sessionImageRepository;
 
     private final FileService fileService;
-    private final ImageService imageService;
 
 
     /* 세션 업데이트 */
@@ -39,8 +38,6 @@ public class SessionService {
 
         /* 기존 이미지 삭제*/
         deleteSessionImageList(updateSession);
-        imageService.deleteImageList(requestDto.getImageUrlListToDelete());
-
 
         /* 세션 업데이트 */
         updateSession.update(requestDto.getSessionInfo());
@@ -58,7 +55,6 @@ public class SessionService {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(SessionResponseDto.of(session,makeImageInfoDto(sessionImageRepository.findAllBySession(session))));
     }
-
 
 
     /* 세션 타입 조회 */
@@ -91,8 +87,6 @@ public class SessionService {
         }
     }
 
-
-
     /* imageInfo dto 생성 */
     public List<ImageInfo> makeImageInfoDto(List<SessionImage> imageList){
         List<ImageInfo> imageInfoList = new ArrayList<>();
@@ -101,6 +95,4 @@ public class SessionService {
         }
         return imageInfoList;
     }
-
-
 }
