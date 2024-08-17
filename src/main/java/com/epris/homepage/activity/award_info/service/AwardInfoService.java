@@ -29,6 +29,13 @@ public class AwardInfoService {
                 .body(AwardInfoResponseDto.of(updateAwardInfo));
     }
 
+    /* 수상 내역 조회 */
+    public ResponseEntity<AwardInfoResponseDto> findAwardInfo() {
+        AwardInfo awardInfo = findAwardInfoById(AWARD_INFO_ID);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(AwardInfoResponseDto.of(awardInfo));
+    }
+
     /* id 로 awardInfo 조회 */
     public AwardInfo findAwardInfoById(Long awardInfoId){
         return awardInfoRepository.findById(awardInfoId)

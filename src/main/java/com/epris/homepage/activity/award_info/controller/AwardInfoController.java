@@ -5,10 +5,7 @@ import com.epris.homepage.activity.award_info.dto.AwardRequestDto;
 import com.epris.homepage.activity.award_info.service.AwardInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,8 +13,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AwardInfoController {
     private final AwardInfoService awardInfoService;
 
+
+    /* 수상 내역 수정 */
     @PutMapping
     public ResponseEntity<AwardInfoResponseDto> updateAwardInfo(@RequestBody AwardRequestDto requestDto){
         return awardInfoService.updateAwardInfo(requestDto);
+    }
+
+    /* 수상 내역 조회 */
+    @GetMapping
+    public ResponseEntity<AwardInfoResponseDto> findAwardInfo(){
+        return awardInfoService.findAwardInfo();
     }
 }
