@@ -42,7 +42,6 @@ public class CorporateProjectService {
 
         /* 기존 이미지 삭제 */
         deleteCorporateProjectImageList(updateCorporateProject);
-        imageService.deleteImageList(requestDto.getImageUrlListToDelete());
 
         /* 세션 업데이트 */
         updateCorporateProject.update(requestDto.getProjectInfo());

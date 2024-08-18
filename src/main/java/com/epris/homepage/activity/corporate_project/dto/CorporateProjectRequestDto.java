@@ -11,5 +11,4 @@ import java.util.List;
 public class CorporateProjectRequestDto {
     private String projectInfo;
     List<ImageUrl> imageUrlList;
-    List<ImageUrl> imageUrlListToDelete;
 }
