@@ -32,4 +32,10 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.OK).body(adminService.login(requestDto));
     }
 
+    /* 로그아웃 */
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(){
+        return ResponseEntity.status(HttpStatus.OK).body(adminService.logout());
+    }
+
 }

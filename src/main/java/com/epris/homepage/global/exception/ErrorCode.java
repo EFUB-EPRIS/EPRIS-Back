@@ -22,7 +22,10 @@ public enum ErrorCode {
 
     /* 관리자 로그인 */
     PASSWORD_MISMATCH(HttpStatus.BAD_REQUEST, "비밀번호가 일치하지 않습니다."),
-    ALREADY_EXIST(HttpStatus.BAD_REQUEST, "이미 관리자 계정이 존재합니다.")
+    ALREADY_EXIST(HttpStatus.BAD_REQUEST, "이미 관리자 계정이 존재합니다."),
+
+    /* JWT */
+    INVALID_TOKEN(HttpStatus.BAD_REQUEST,"유효하지 않은 토큰입니다."),
 
     ;
 

@@ -5,6 +5,7 @@ import com.epris.homepage.admin.dto.LoginRequestDto;
 import com.epris.homepage.admin.dto.LoginResponseDto;
 import com.epris.homepage.admin.dto.SignupRequestDto;
 import com.epris.homepage.admin.repository.AdminRepository;
+import com.epris.homepage.admin.repository.RefreshTokenRepository;
 import com.epris.homepage.global.exception.CustomException;
 import com.epris.homepage.global.exception.ErrorCode;
 import com.epris.homepage.global.jwt.TokenProvider;
@@ -16,11 +17,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.Duration;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdminService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AdminRepository adminRepository;
     private final TokenProvider tokenProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final TokenService tokenService;
 
     /* 관리자 계정 생성 */
     public String saveAdmin(SignupRequestDto requestDto){
@@ -48,10 +52,27 @@ public class AdminService {
             throw new CustomException(ErrorCode.PASSWORD_MISMATCH);
         }
 
-        /* 로그인 성공 -> 토큰 생성 */
-        String accessToken = tokenProvider.generateToken(admin, Duration.ofHours(1));
+        /*
+        로그인 성공 -> 토큰 생성
+        - 액세스토큰: 1시간
+        - 리프레시토큰: 7일
+        */
+        String accessToken = tokenProvider.generateAccessToken(admin, Duration.ofHours(1));
+        String refreshToken = tokenProvider.generateRefreshToken(admin, Duration.ofDays(7));
 
-        return LoginResponseDto.builder().accessToken(accessToken).build();
+        /* 리프레시 토큰 저장 */
+        tokenService.saveRefreshToken(refreshToken, admin.getAdminId());
+
+        return LoginResponseDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
+
+    /*  로그아웃 */
+    public String logout(){
+        refreshTokenRepository.deleteByAdminId(1L);
+        return "로그아웃되었습니다.";
     }
 
     /* id로 Admin 조회 */
@@ -63,6 +84,6 @@ public class AdminService {
     /* 해당 id의 관리자 객체가 있는지 확인 */
     @Transactional(readOnly = true)
     public Boolean existsById(Long id) {
-        return true;
+        return adminRepository.existsById(id);
     }
 }

@@ -22,7 +22,12 @@ import java.util.Set;
 public class TokenProvider {
     private final JwtProperties jwtProperties;
 
-    public String generateToken(Admin admin, Duration expiredAt){
+    public String generateAccessToken(Admin admin, Duration expiredAt){
+        Date now = new Date();
+        return makeToken(admin, new Date(now.getTime() + expiredAt.toMillis()));
+    }
+
+    public String generateRefreshToken(Admin admin, Duration expiredAt){
         Date now = new Date();
         return makeToken(admin, new Date(now.getTime() + expiredAt.toMillis()));
     }
