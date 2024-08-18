@@ -29,7 +29,7 @@ public class AdminService {
     /* 관리자 계정 생성 */
     public String saveAdmin(SignupRequestDto requestDto){
         /* 관리자 계정이 있는지 확인 */
-        if(!existsById(1L)){
+        if(existsById(1L)){
             throw new CustomException(ErrorCode.ALREADY_EXIST);
         }
 
