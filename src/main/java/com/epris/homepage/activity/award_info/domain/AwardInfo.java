@@ -2,9 +2,12 @@ package com.epris.homepage.activity.award_info.domain;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AwardInfo {
     @Id
@@ -20,4 +23,17 @@ public class AwardInfo {
 
     @Column(name = "awards_num", nullable = false)
     private String awardsNum;
+
+    @Builder
+    public AwardInfo(String awardsInfo, String projectNum, String awardsNum){
+        this.awardsInfo = awardsInfo;
+        this.projectNum = projectNum;
+        this.awardsNum = awardsNum;
+    }
+
+    public void update(String awardsInfo, String projectNum, String awardsNum){
+        this.awardsInfo = awardsInfo;
+        this.projectNum = projectNum;
+        this.awardsNum = awardsNum;
+    }
 }
