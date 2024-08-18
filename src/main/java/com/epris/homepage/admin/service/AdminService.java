@@ -54,10 +54,10 @@ public class AdminService {
 
         /*
         로그인 성공 -> 토큰 생성
-        - 액세스토큰: 1시간
+        - 액세스토큰: 30분
         - 리프레시토큰: 7일
         */
-        String accessToken = tokenProvider.generateAccessToken(admin, Duration.ofHours(1));
+        String accessToken = tokenProvider.generateAccessToken(admin, Duration.ofMinutes(30));
         String refreshToken = tokenProvider.generateRefreshToken(admin, Duration.ofDays(7));
 
         /* 리프레시 토큰 저장 */

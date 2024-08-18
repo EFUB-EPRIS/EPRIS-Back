@@ -33,8 +33,8 @@ public class TokenService {
         Long adminId = findByRefreshToken(refreshToken).getAdminId();
         Admin admin = findById(adminId);
 
-        /* 액세스 토큰 재발급 */
-        String accessToken = tokenProvider.generateAccessToken(admin, Duration.ofHours(1));
+        /* 액세스 토큰 재발급: 30분 */
+        String accessToken = tokenProvider.generateAccessToken(admin, Duration.ofMinutes(30));
 
         return TokenResponseDto.builder()
                 .accessToken(accessToken)
