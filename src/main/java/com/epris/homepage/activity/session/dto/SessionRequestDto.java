@@ -11,5 +11,4 @@ import java.util.List;
 public class SessionRequestDto {
     private String sessionInfo;
     private List<ImageUrl> imageUrlList;
-    private List<ImageUrl> imageUrlListToDelete;
 }
