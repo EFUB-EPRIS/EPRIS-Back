@@ -34,7 +34,7 @@ public class TokenService {
         Admin admin = findById(adminId);
 
         /* 액세스 토큰 재발급 */
-        String accessToken = tokenProvider.generateAccessToken(admin, Duration.ofHours(2));
+        String accessToken = tokenProvider.generateAccessToken(admin, Duration.ofHours(1));
 
         return TokenResponseDto.builder()
                 .accessToken(accessToken)
