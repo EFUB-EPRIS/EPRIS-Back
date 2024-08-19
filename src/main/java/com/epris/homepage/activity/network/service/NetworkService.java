@@ -34,7 +34,8 @@ public class NetworkService {
     /* 네트워크 수정 */
     public ResponseEntity<NetworkResponseDto> updateNetwork(String type, NetworkReqeustDto reqeustDto) throws IOException {
         Network updateNetwork = findNetworkByType(type);
-        if(!updateNetwork.getNetworkImg().isEmpty()) fileService.deleteImage(updateNetwork.getNetworkImg());
+        /* 기존에 저장되어있던 이미지와 요청 dto의 url이 다른 경우, 기존 url은 삭제 */
+        if(!updateNetwork.getNetworkImg().isEmpty() && !updateNetwork.getNetworkImg().equals(reqeustDto.getImageUrl())) fileService.deleteImage(updateNetwork.getNetworkImg());
         updateNetwork.update(reqeustDto.getImageUrl(),reqeustDto.getNetworkInfo());
         return ResponseEntity.status(HttpStatus.OK)
                 .body(NetworkResponseDto.of(updateNetwork));
