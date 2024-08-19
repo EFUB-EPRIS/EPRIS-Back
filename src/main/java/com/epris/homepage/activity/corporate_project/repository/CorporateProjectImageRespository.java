@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface CorporateProjectImageRespository extends JpaRepository<CorporateProjectImage, Long> {
     List<CorporateProjectImage> findAllByCorporateProject(CorporateProject corporateProject);
+    Boolean existsByProjectImgUrl(String projectImgUrl);
+    CorporateProjectImage findByProjectImgUrl(String projectImgUrl);
 }

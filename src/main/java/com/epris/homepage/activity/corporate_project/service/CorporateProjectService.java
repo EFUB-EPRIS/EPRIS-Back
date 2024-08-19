@@ -40,12 +40,23 @@ public class CorporateProjectService {
         /* 1번 프로젝트에 대한 수정만 반복될 것임 */
         CorporateProject updateCorporateProject = findById(CORPORATE_PROJECT_ID);
 
+        /* 기존 이미지 목록 */
+        List<CorporateProjectImage> deleteImageList = corporateProjectImageRespository.findAllByCorporateProject(updateCorporateProject);
+        for(ImageUrl url : requestDto.getImageUrlList()){
+            /* 기존 이미지 중 유지해야 하는 이미지는 삭제 목록에서 제외 */
+            if(corporateProjectImageRespository.existsByProjectImgUrl(url.getImageUrl()).equals(Boolean.TRUE)){
+                deleteImageList.remove(corporateProjectImageRespository.findByProjectImgUrl(url.getImageUrl()));
+            }
+            /* 새롭게 저장해야 하는 이미지는 저장 */
+            else{
+                corporateProjectImageRespository.save(new CorporateProjectImage(updateCorporateProject,url.getImageUrl()));
+            }
+        }
         /* 기존 이미지 삭제 */
-        deleteCorporateProjectImageList(updateCorporateProject);
+        deleteCorporateProjectImageList(deleteImageList);
 
         /* 세션 업데이트 */
         updateCorporateProject.update(requestDto.getProjectInfo());
-        saveImageList(updateCorporateProject,requestDto.getImageUrlList());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(CorporateProjectResponseDto.of(updateCorporateProject,
@@ -64,8 +75,7 @@ public class CorporateProjectService {
 
 
     /* 협력 프로젝트의 모든 이미지 삭제 */
-    private void deleteCorporateProjectImageList(CorporateProject corporateProject) throws IOException {
-        List<CorporateProjectImage> corporateProjectImageList = corporateProjectImageRespository.findAllByCorporateProject(corporateProject);
+    private void deleteCorporateProjectImageList(List<CorporateProjectImage> corporateProjectImageList) throws IOException {
         for(CorporateProjectImage corporateProjectImage : corporateProjectImageList){
             fileService.deleteImage(corporateProjectImage.getProjectImgUrl());
             corporateProjectImageRespository.delete(corporateProjectImage);
