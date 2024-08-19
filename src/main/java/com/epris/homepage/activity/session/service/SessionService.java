@@ -36,12 +36,23 @@ public class SessionService {
         SessionType sessionType = getSessionType(type);
         Session updateSession = findSessionByType(sessionType);
 
+        /* 기존 세션 이미지 */
+        List<SessionImage> deleteSessionImageList = sessionImageRepository.findAllBySession(updateSession);
+        for(ImageUrl url : requestDto.getImageUrlList()){
+            /* 만약 유지되어야 할 이미지의 경우, 삭제 목록에서 제외 */
+            if(sessionImageRepository.existsBySessionImgUrl(url.getImageUrl())){
+                deleteSessionImageList.remove(sessionImageRepository.findBySessionImgUrl(url.getImageUrl()));
+            }
+            /* 새롭게 저장해야 할 이미지의 경우, 저장 */
+            else{
+                sessionImageRepository.save(new SessionImage(url.getImageUrl(),updateSession));
+            }
+        }
         /* 기존 이미지 삭제*/
-        deleteSessionImageList(updateSession);
+        deleteSessionImageList(deleteSessionImageList);
 
         /* 세션 업데이트 */
         updateSession.update(requestDto.getSessionInfo());
-        saveImageList(updateSession,requestDto.getImageUrlList());
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(SessionResponseDto.of(updateSession,makeImageInfoDto(sessionImageRepository.findAllBySession(updateSession))));
@@ -72,8 +83,7 @@ public class SessionService {
 
 
     /* 세션의 기존 이미지 삭제 */
-    public void deleteSessionImageList(Session session) throws IOException {
-        List<SessionImage> sessionImageList = sessionImageRepository.findAllBySession(session);
+    public void deleteSessionImageList(List<SessionImage> sessionImageList) throws IOException {
         for(SessionImage sessionImage : sessionImageList){
             fileService.deleteImage(sessionImage.getSessionImgUrl());
             sessionImageRepository.delete(sessionImage);
