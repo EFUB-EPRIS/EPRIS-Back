@@ -46,7 +46,7 @@ public class SecurityConfig {
                 // csrf 비활성화
                 .csrf(AbstractHttpConfigurer::disable)
                 // cors 비활성화
-                .cors(AbstractHttpConfigurer::disable)
+                .cors(corsConfigurer -> corsConfigurer.configurationSource(corsConfigurationSource()))
                 //인증 인가 설정
                 .authorizeHttpRequests(requests -> {
                     /* 회원가입, 로그인, 액세스토큰 재발급, GET요청은 항상 접근 가능 */
