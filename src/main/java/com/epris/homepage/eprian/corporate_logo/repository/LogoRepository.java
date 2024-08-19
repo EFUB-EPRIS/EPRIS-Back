@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface LogoRepository extends JpaRepository<CorporateLogo, Long> {
     List<CorporateLogo> findAllByLogoType(LogoType logoType);
-
+    CorporateLogo findByLogoImg(String logoImg);
+    Boolean existsByLogoImg(String logoImg);
 }

@@ -31,14 +31,23 @@ public class LogoService {
     public ResponseEntity<ImageResponseDto> uploadLogoList(String type, ImageRequestDto requestDto) throws IOException {
         LogoType logoType = getLogoType(type);
 
-        /* 기존 로고 삭제 */
-        if(!logoRepository.findAllByLogoType(logoType).isEmpty()){
-            deleteLogo(logoRepository.findAllByLogoType(logoType));
+        /* 기존 로고 중 삭제해야 할 로고만 삭제 */
+        List<CorporateLogo> deleteLogoList = logoRepository.findAllByLogoType(logoType);
+        List<CorporateLogo> newLogoList = new ArrayList<>();
+        for(ImageUrl url : requestDto.getImageUrlList()){
+            /* 만약 기존 저장되어있던 로고인 경우, 삭제 목록에서 제외 */
+            if(logoRepository.existsByLogoImg(url.getImageUrl()).equals(Boolean.TRUE)){
+                deleteLogoList.remove(logoRepository.findByLogoImg(url.getImageUrl()));
+            }
+            /* 새롭게 업데이트 하는 로고인 경우, 저장 */
+            else {
+                logoRepository.save(new CorporateLogo(url.getImageUrl(),logoType));
+            }
         }
+        /* 기존 로고 삭제 */
+        deleteLogo(deleteLogoList);
 
-        /* 새로운 로고 저장 */
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(ImageResponseDto.of(uploadNewLogoList(logoType,requestDto)));
+        return findLogoListByType(type);
     }
 
     /* 타입 별 로고 목록 조회 */
@@ -51,11 +60,10 @@ public class LogoService {
 
     }
 
-
     /* 로고 삭제 */
     public void deleteLogo(List<CorporateLogo> logoList) throws IOException {
         for(CorporateLogo corporateLogo:logoList){
-            fileService.deleteImage(corporateLogo.getLogoImg());
+            //fileService.deleteImage(corporateLogo.getLogoImg());
             logoRepository.delete(corporateLogo);
         }
     }
