@@ -91,11 +91,11 @@ public class MemberService {
 
     /* 기존 학회원 정보 수정 */
     public Member updateMember(MemberRequestDto requestDto) throws IOException {
-        /* 기존 프로필 이미지 s3 에서 삭제 */
-        fileService.deleteImage(requestDto.getProfileUrl());
-
         Member member = memberRepository.findById(requestDto.getMemberId())
                 .orElseThrow(()->new CustomException(ErrorCode.NO_CONTENT_EXIST));
+
+        /* 프로필을 업데이트 할 경우(요청 url 과 DB 에 저장된 url 이 다른 경우), 기존 프로필은 삭제 */
+        if(!member.getProfileImg().equals(requestDto.getProfileUrl())) fileService.deleteImage(member.getProfileImg());
         Num num = numRepository.findByNumInfo(requestDto.getNum());
         member.update(requestDto.getName(), requestDto.getPosition(), requestDto.getMemberInfo(),
                 requestDto.getProfileUrl(), requestDto.getIsActive(), num);
