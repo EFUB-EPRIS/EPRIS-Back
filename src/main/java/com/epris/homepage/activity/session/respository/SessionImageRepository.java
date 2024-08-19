@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface SessionImageRepository extends JpaRepository<SessionImage, Long> {
     List<SessionImage> findAllBySession(Session session);
+    Boolean existsBySessionImgUrl(String SessionImgUrl);
+    SessionImage findBySessionImgUrl(String SessionImgUrl);
 }

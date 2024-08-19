@@ -16,7 +16,7 @@ public class SessionImage {
     private Long sessionImgId;
 
     @Column(name = "session_img_url", updatable = false)
-    private String SessionImgUrl;
+    private String sessionImgUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id")
@@ -24,7 +24,7 @@ public class SessionImage {
 
     @Builder
     public SessionImage(String sessionImgUrl, Session session){
-        this.SessionImgUrl = sessionImgUrl;
+        this.sessionImgUrl = sessionImgUrl;
         this.session = session;
     }
 }
