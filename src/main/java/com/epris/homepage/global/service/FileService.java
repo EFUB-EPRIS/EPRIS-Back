@@ -23,6 +23,7 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.UUID;
 
 
 @Service
@@ -41,7 +42,8 @@ public class FileService {
 
     /* presigned url 발급 */
     public String getPreSignedUrl(String fileName) throws Exception {
-        GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePreSignedUrlRequest(bucket, fileName);
+        String uniqueFileName = createPath(fileName);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = getGeneratePreSignedUrlRequest(bucket, uniqueFileName);
         URL url = amazonS3.generatePresignedUrl(generatePresignedUrlRequest);
 
         return url.toString();
@@ -90,5 +92,14 @@ public class FileService {
         String path = urlObj.getPath();
         /* url 디코딩 */
         return URLDecoder.decode(path.substring(path.lastIndexOf('/') + 1), StandardCharsets.UTF_8);
+    }
+
+    private String createFileId() {
+        return UUID.randomUUID().toString();
+    }
+
+    private String createPath(String fileName) {
+        String fileId = createFileId();
+        return String.format("%s", fileId + fileName);
     }
 }

@@ -52,6 +52,7 @@ public class SecurityConfig {
                     /* 회원가입, 로그인, 액세스토큰 재발급, GET요청은 항상 접근 가능 */
                     requests.requestMatchers("admin/signup","admin/login","token").permitAll();
                     requests.requestMatchers(HttpMethod.GET).permitAll();
+                    requests.requestMatchers(HttpMethod.POST).permitAll();
                     /* 다른 모든 요청은 막기 */
                     requests.anyRequest().authenticated();
                 })
