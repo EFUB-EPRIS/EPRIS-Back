@@ -29,12 +29,12 @@ public class RecruitmentService {
 
         /* 기존에 저장되어있던 문서와 요청 dto의 url이 다를 경우, 기존 url 삭제 */
         if(!recruitment.getDoc().isEmpty() && !recruitment.getDoc().equals(requestDto.getDoc())){
-            fileService.deleteImage(requestDto.getDoc());
+            fileService.deleteImage(recruitment.getDoc());
         }
 
         /* 기존에 저장되어있던 포스터와 요청 dto의 url이 다를 경우, 기존 url 삭제 */
-        if(!recruitment.getPoster().isEmpty() && !recruitment.getPoster().equals(recruitment.getPoster())){
-            fileService.deleteImage(requestDto.getPoster());
+        if(!recruitment.getPoster().isEmpty() && !recruitment.getPoster().equals(requestDto.getPoster())){
+            fileService.deleteImage(recruitment.getPoster());
         }
 
         /* 모집 정보 업데이트 */
