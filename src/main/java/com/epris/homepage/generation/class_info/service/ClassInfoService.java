@@ -28,9 +28,10 @@ public class ClassInfoService {
         /* 기수 정보 가져오기 */
         ClassInfo classInfo = findById(1L);
 
-        /* 기존 이미지 삭제 */
-        String adminImg = classInfo.getAdminImg();
-        fileService.deleteImage(adminImg);
+        /* 기존에 저장되어있던 이미지와 요청 dto의 url이 다를 경우, 기존 url 삭제 */
+        if(!classInfo.getAdminImg().isEmpty() && !classInfo.getAdminImg().equals(requestDto.getAdminImg())) {
+            fileService.deleteImage(classInfo.getAdminImg());
+        }
 
         /* 기수 정보 업데이트 */
         classInfo.updateClassinfo(requestDto.getNum(), requestDto.getPhoneNum(), requestDto.getPhoneNumInfo(), requestDto.getEmail(),
