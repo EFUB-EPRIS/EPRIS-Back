@@ -42,9 +42,10 @@ public class GreetingCardService {
         /* 해당 id 카드 가져오기 */
         GreetingCard card = findById(cardId);
 
-        /* 기존 카드 이미지 삭제 */
-        String cardImg = card.getCardImg();
-        fileService.deleteImage(cardImg);
+        /* 기존에 저장되어있던 이미지와 요청 dto의 url이 다를 경우, 기존 url 삭제 */
+        if(!card.getCardImg().isEmpty() && !card.getCardImg().equals(requestDto.getCardImg())){
+            fileService.deleteImage(card.getCardImg());
+        }
 
         /* 그리팅 카드 업데이트 */
         card.updateCard(requestDto.getName(), requestDto.getPosition(), requestDto.getIntroduce(), requestDto.getCardImg());
