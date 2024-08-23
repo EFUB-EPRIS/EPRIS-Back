@@ -68,6 +68,7 @@ public class FileService {
     /* S3에서 파일 삭제 */
     public void deleteImage(String imageUrl) throws IOException {
         String imageName = getFileNameFromURL(imageUrl);
+        if(imageUrl.equals(null)) throw new CustomException(ErrorCode.INPUT_IS_NULL);
         try {
             if(!amazonS3Client.doesObjectExist(bucket,imageName)) throw new CustomException(ErrorCode.NO_CONTENT_EXIST);
             amazonS3Client.deleteObject(new DeleteObjectRequest(bucket,imageName));
