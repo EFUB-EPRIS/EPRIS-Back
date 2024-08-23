@@ -53,7 +53,7 @@ public class CorporateProjectService {
             }
         }
         /* 기존 이미지 삭제 */
-        deleteCorporateProjectImageList(deleteImageList);
+        if(!deleteImageList.isEmpty()) deleteCorporateProjectImageList(deleteImageList);
 
         /* 세션 업데이트 */
         updateCorporateProject.update(requestDto.getProjectInfo());
@@ -61,8 +61,6 @@ public class CorporateProjectService {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(CorporateProjectResponseDto.of(updateCorporateProject,
                         makeImageInfoDto(corporateProjectImageRespository.findAllByCorporateProject(updateCorporateProject))));
-
-
     }
 
     /* 협력 프로젝트 조회 */
