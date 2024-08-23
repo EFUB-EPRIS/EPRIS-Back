@@ -45,7 +45,7 @@ public class LogoService {
             }
         }
         /* 기존 로고 삭제 */
-        deleteLogo(deleteLogoList);
+        if(!deleteLogoList.isEmpty())deleteLogo(deleteLogoList);
 
         return findLogoListByType(type);
     }
