@@ -27,6 +27,9 @@ public enum ErrorCode {
     /* JWT */
     INVALID_TOKEN(HttpStatus.BAD_REQUEST,"유효하지 않은 토큰입니다."),
 
+    /* member */
+    INVALID_NUM(HttpStatus.BAD_REQUEST,"존재하지 않는 기수입니다.")
+
     ;
 
 

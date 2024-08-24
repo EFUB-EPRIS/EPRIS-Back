@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static org.apache.http.client.methods.RequestBuilder.delete;
+
 
 @Service
 @Transactional
@@ -139,6 +141,34 @@ public class MemberService {
                 .orElseThrow(()->new CustomException(ErrorCode.NO_CONTENT_EXIST));
         fileService.deleteImage(member.getProfileImg());
         memberRepository.delete(member);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body("삭제했습니다.");
+    }
+
+    /* 학회원 목록 삭제 */
+    public void deleteMemberList(List<Member> memberList) throws IOException {
+        for(Member member : memberList){
+            fileService.deleteImage(member.getProfileImg());
+            memberRepository.delete(member);
+        }
+    }
+
+    /* 기수별 전체 학회원 삭제 */
+    public ResponseEntity deleteMemberListByNum(String num) throws IOException {
+
+        /* 기수 조회 */
+        Num deleteNum = numRepository.findByNumInfo(num);
+        if(deleteNum.equals("")) throw new CustomException(ErrorCode.INVALID_NUM);
+
+        /* 기수로 회원 조회 */
+        List<Member> memberList = memberRepository.findAllByNum(deleteNum);
+
+        /* 기수별 회원 삭제 */
+        if(!memberList.isEmpty()) deleteMemberList(memberList);
+
+        /* 기수 정보 삭제 */
+        numRepository.delete(deleteNum);
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body("삭제했습니다.");
     }

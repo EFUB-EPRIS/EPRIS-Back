@@ -54,4 +54,10 @@ public class MemberController {
     public ResponseEntity deleteMember(@PathVariable("memberId") Long memberId) throws IOException {
         return memberService.deleteMember(memberId);
     }
+
+    /* 특정 기수 학회원 전체 삭제 */
+    @DeleteMapping
+    public ResponseEntity deleteMemberListByNum(@RequestParam("num")String num) throws IOException {
+        return memberService.deleteMemberListByNum(num);
+    }
 }
