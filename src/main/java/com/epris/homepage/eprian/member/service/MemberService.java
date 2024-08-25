@@ -97,7 +97,7 @@ public class MemberService {
                 .orElseThrow(()->new CustomException(ErrorCode.NO_CONTENT_EXIST));
 
         /* 프로필을 업데이트 할 경우(요청 url 과 DB 에 저장된 url 이 다른 경우), 기존 프로필은 삭제 */
-        if(!member.getProfileImg().equals("") && !member.getProfileImg().equals(requestDto.getProfileUrl())) fileService.deleteImage(member.getProfileImg());
+        if(!member.getProfileImg().isBlank() && !member.getProfileImg().equals(requestDto.getProfileUrl())) fileService.deleteImage(member.getProfileImg());
         Num num = numRepository.findByNumInfo(requestDto.getNum());
         member.update(requestDto.getName(), requestDto.getPosition(), requestDto.getMemberInfo(),
                 requestDto.getProfileUrl(), requestDto.getIsActive(), num);
@@ -158,7 +158,7 @@ public class MemberService {
 
         /* 기수 조회 */
         Num deleteNum = numRepository.findByNumInfo(num);
-        if(deleteNum.equals("")) throw new CustomException(ErrorCode.INVALID_NUM);
+        if(deleteNum.getNumInfo().isBlank()) throw new CustomException(ErrorCode.INVALID_NUM);
 
         /* 기수로 회원 조회 */
         List<Member> memberList = memberRepository.findAllByNum(deleteNum);
