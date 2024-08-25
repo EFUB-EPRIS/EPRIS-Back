@@ -3,6 +3,7 @@ package com.epris.homepage.activity.award_info.controller;
 import com.epris.homepage.activity.award_info.dto.AwardInfoResponseDto;
 import com.epris.homepage.activity.award_info.dto.AwardRequestDto;
 import com.epris.homepage.activity.award_info.service.AwardInfoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ public class AwardInfoController {
 
     /* 수상 내역 수정 */
     @PutMapping
-    public ResponseEntity<AwardInfoResponseDto> updateAwardInfo(@RequestBody AwardRequestDto requestDto){
+    public ResponseEntity<AwardInfoResponseDto> updateAwardInfo(@Valid @RequestBody AwardRequestDto requestDto){
         return awardInfoService.updateAwardInfo(requestDto);
     }
 
