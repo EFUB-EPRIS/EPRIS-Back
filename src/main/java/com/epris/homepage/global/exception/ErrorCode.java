@@ -25,7 +25,7 @@ public enum ErrorCode {
     ALREADY_EXIST(HttpStatus.BAD_REQUEST, "이미 관리자 계정이 존재합니다."),
 
     /* JWT */
-    INVALID_TOKEN(HttpStatus.BAD_REQUEST,"유효하지 않은 토큰입니다."),
+    EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED,"만료된 토큰입니다."),
 
     /* member */
     INVALID_NUM(HttpStatus.BAD_REQUEST,"존재하지 않는 기수입니다.")
