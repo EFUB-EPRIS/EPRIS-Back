@@ -31,11 +31,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = getAccessToken(authorizationHeader);
 
         if(!ObjectUtils.isEmpty(token)){
+            /* 토큰이 만료된 경우 Exception 던지기 */
             if(tokenProvider.isTokenExpired(token)){
                 throw new JwtException("accessToken is expired");
             }
 
-            /* 가져온 토큰이 유효한지 확인하고, 유효하다면 인증정보 설정 */
+            /* 토큰이 유효한지 확인하고, 유효하다면 인증정보 설정 */
             if(tokenProvider.validateToken(token)){
                 Authentication authentication = tokenProvider.getAuthentication(token);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
