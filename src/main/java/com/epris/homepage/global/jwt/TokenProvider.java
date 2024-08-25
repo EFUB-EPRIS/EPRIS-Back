@@ -54,6 +54,12 @@ public class TokenProvider {
                 .compact();
     }
 
+    /* 토큰이 만료됐는지 확인 */
+    public boolean isTokenExpired(String token) {
+        final Date expiration = getExpirationDate(token);
+        return expiration.before(new Date());
+    }
+
     /* JWT 토큰 유효성 검증 */
     public boolean validateToken(String token){
         try{
@@ -85,5 +91,10 @@ public class TokenProvider {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    /* 토큰의 만료 날짜 가져오기 */
+    public Date getExpirationDate(String token){
+        return getClaims(token).getExpiration();
     }
 }

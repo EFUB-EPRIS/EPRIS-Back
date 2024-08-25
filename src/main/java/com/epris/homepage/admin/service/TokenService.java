@@ -26,7 +26,7 @@ public class TokenService {
     public TokenResponseDto createNewAccessToken(String refreshToken) {
         /* 유효한 토큰인지 확인 */
         if(!tokenProvider.validateToken(refreshToken)){
-            throw new CustomException(ErrorCode.INVALID_TOKEN);
+            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
         }
 
         /* 유효하다면 해당 토큰으로 관리자 ID를 찾아 관리자 객체 가져오기 */
@@ -34,7 +34,7 @@ public class TokenService {
         Admin admin = findById(adminId);
 
         /* 액세스 토큰 재발급: 30분 */
-        String accessToken = tokenProvider.generateAccessToken(admin, Duration.ofDays(7));
+        String accessToken = tokenProvider.generateAccessToken(admin, Duration.ofMinutes(30));
 
         return TokenResponseDto.builder()
                 .accessToken(accessToken)

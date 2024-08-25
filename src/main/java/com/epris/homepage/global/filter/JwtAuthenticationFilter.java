@@ -1,6 +1,7 @@
-package com.epris.homepage.global.config;
+package com.epris.homepage.global.filter;
 
 import com.epris.homepage.global.jwt.TokenProvider;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,12 +9,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Component
 @RequiredArgsConstructor
-public class TokenAuthFilter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
 
     @Override
@@ -26,10 +30,17 @@ public class TokenAuthFilter extends OncePerRequestFilter {
         /* 가져온 값에서 Bearer 제거 */
         String token = getAccessToken(authorizationHeader);
 
-        /* 가져온 토큰이 유효한지 확인하고, 유효하다면 인증정보 설정 */
-        if(tokenProvider.validateToken(token)){
-            Authentication authentication = tokenProvider.getAuthentication(token);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        if(!ObjectUtils.isEmpty(token)){
+            /* 토큰이 만료된 경우 Exception 던지기 */
+            if(tokenProvider.isTokenExpired(token)){
+                throw new JwtException("accessToken is expired");
+            }
+
+            /* 토큰이 유효한지 확인하고, 유효하다면 인증정보 설정 */
+            if(tokenProvider.validateToken(token)){
+                Authentication authentication = tokenProvider.getAuthentication(token);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
 
         filterChain.doFilter(request, response);
