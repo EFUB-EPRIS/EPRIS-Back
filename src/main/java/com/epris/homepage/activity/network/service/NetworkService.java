@@ -34,6 +34,10 @@ public class NetworkService {
     /* 네트워크 수정 */
     public ResponseEntity<NetworkResponseDto> updateNetwork(String type, NetworkReqeustDto reqeustDto) throws IOException {
         Network updateNetwork = findNetworkByType(type);
+
+        /* 이미지 url로 null이 들어와서는 안됨. */
+        if(reqeustDto.getImageUrl().equals("")) throw new CustomException(ErrorCode.IMAGE_CANNOT_BE_NULL);
+
         /* 기존에 저장되어있던 이미지와 요청 dto의 url이 다른 경우, 기존 url은 삭제 */
         if(!updateNetwork.getNetworkImg().equals("") && !updateNetwork.getNetworkImg().equals(reqeustDto.getImageUrl())) fileService.deleteImage(updateNetwork.getNetworkImg());
         updateNetwork.update(reqeustDto.getImageUrl(),reqeustDto.getNetworkInfo());
