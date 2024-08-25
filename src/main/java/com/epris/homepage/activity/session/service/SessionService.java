@@ -49,7 +49,7 @@ public class SessionService {
             }
         }
         /* 기존 이미지 삭제*/
-        if(!deleteSessionImageList.isEmpty())deleteSessionImageList(deleteSessionImageList);
+        if(!deleteSessionImageList.isEmpty()) deleteSessionImageList(deleteSessionImageList);
 
         /* 세션 업데이트 */
         updateSession.update(requestDto.getSessionInfo());
