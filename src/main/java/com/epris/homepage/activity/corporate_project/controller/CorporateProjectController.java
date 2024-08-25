@@ -4,6 +4,7 @@ package com.epris.homepage.activity.corporate_project.controller;
 import com.epris.homepage.activity.corporate_project.dto.CorporateProjectRequestDto;
 import com.epris.homepage.activity.corporate_project.dto.CorporateProjectResponseDto;
 import com.epris.homepage.activity.corporate_project.service.CorporateProjectService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class CorporateProjectController {
     private final CorporateProjectService corporateProjectService;
 
     @PostMapping
-    public ResponseEntity<CorporateProjectResponseDto> updateCorporateProject(@RequestBody CorporateProjectRequestDto requestDto) throws IOException {
+    public ResponseEntity<CorporateProjectResponseDto> updateCorporateProject(@Valid @RequestBody CorporateProjectRequestDto requestDto) throws IOException {
         return corporateProjectService.updateCorporateProject(requestDto);
     }
 
