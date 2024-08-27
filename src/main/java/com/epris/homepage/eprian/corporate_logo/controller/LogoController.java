@@ -5,6 +5,7 @@ import com.epris.homepage.activity.corporate_project.service.CorporateProjectSer
 import com.epris.homepage.eprian.corporate_logo.service.LogoService;
 import com.epris.homepage.global.dto.ImageRequestDto;
 import com.epris.homepage.global.dto.ImageResponseDto;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ public class LogoController {
 
     /* 로고 업로드 */
     @PostMapping("/corporate-logo")
-    public ResponseEntity<ImageResponseDto> uploadLogoImageList(@RequestParam("type") String type, @RequestBody ImageRequestDto requestDto) throws IOException {
+    public ResponseEntity<ImageResponseDto> uploadLogoImageList(@RequestParam("type") String type, @Valid @RequestBody ImageRequestDto requestDto) throws IOException {
         return logoService.uploadLogoList(type,requestDto);
     }
 
