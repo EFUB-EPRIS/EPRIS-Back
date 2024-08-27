@@ -1,5 +1,6 @@
 package com.epris.homepage.global.dto;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,5 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ImageRequestDto {
+
+    @NotEmpty
     private List<ImageUrl> imageUrlList;
 }
