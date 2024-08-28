@@ -9,13 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class MemberRequestDto {
 
-    @NotBlank
     private Boolean isNew;
 
     @NotBlank
     private String num;
 
-    @NotBlank
     private Long memberId;
 
     @NotBlank
@@ -30,6 +28,5 @@ public class MemberRequestDto {
     @NotBlank
     private String profileUrl;
 
-    @NotBlank
     private Boolean isActive;
 }
