@@ -16,6 +16,7 @@ public class SessionRequestDto {
     @NotBlank
     private String sessionInfo;
 
+    @NotEmpty
     @Valid
     private List<ImageUrl> imageUrlList;
 }

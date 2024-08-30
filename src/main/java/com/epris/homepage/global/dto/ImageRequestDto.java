@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ImageRequestDto {
 
+    @NotEmpty
     @Valid
     private List<ImageUrl> imageUrlList;
 }

@@ -16,6 +16,7 @@ public class CorporateProjectRequestDto {
     @NotBlank
     private String projectInfo;
 
+    @NotEmpty
     @Valid
     List<ImageUrl> imageUrlList;
 }
