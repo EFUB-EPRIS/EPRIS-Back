@@ -79,8 +79,8 @@ public class MemberService {
         List<MemberResponseDto> responseDtoList = new ArrayList<>();
         responseDtoList.addAll(findMemberByPosition("학회장").stream().map(MemberResponseDto::of).collect(Collectors.toList()));
         responseDtoList.addAll(findMemberByPosition("기획부장").stream().map(MemberResponseDto::of).collect(Collectors.toList()));
-        responseDtoList.addAll(findMemberByPosition("홍보부장").stream().map(MemberResponseDto::of).collect(Collectors.toList()));
         responseDtoList.addAll(findMemberByPosition("운영부장").stream().map(MemberResponseDto::of).collect(Collectors.toList()));
+        responseDtoList.addAll(findMemberByPosition("홍보부장").stream().map(MemberResponseDto::of).collect(Collectors.toList()));
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(responseDtoList);
