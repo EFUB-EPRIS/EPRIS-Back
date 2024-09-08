@@ -45,7 +45,7 @@ public class LogoService {
             }
         }
         /* 기존 로고 삭제 */
-        if(!deleteLogoList.isEmpty())deleteLogo(deleteLogoList);
+        if(!deleteLogoList.isEmpty()) deleteLogo(deleteLogoList);
 
         return findLogoListByType(type);
     }
@@ -63,7 +63,7 @@ public class LogoService {
     /* 로고 삭제 */
     public void deleteLogo(List<CorporateLogo> logoList) throws IOException {
         for(CorporateLogo corporateLogo:logoList){
-            //fileService.deleteImage(corporateLogo.getLogoImg());
+            fileService.deleteImage(corporateLogo.getLogoImg());
             logoRepository.delete(corporateLogo);
         }
     }
