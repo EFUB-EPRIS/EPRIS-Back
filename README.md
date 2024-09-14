@@ -11,7 +11,7 @@
 # 기술 스택
 |통합 개발 환경| IntelliJ                       |
 |---|--------------------------------|
-|Spring 버전| 3.3.2                          |
+|Spring Boot 버전| 3.3.2                          |
 |데이터베이스| AWS RDS(MySQL)                 |
 |배포| AWS EC2(Ubuntu),S3, CodeDeploy |
 |Project 빌드 관리 도구| Gradle                         |
