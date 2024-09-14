@@ -1,11 +1,10 @@
 # EPRIS-Back
 # 기능 설명
-
 이화여자대학교 pr 학회 epris 홈페이지 레포지토리입니다.
 
 - pr 정보 확인
 - presigned url 이용 파일 업로드
-- Spring Security, JWT
+- Spring Security, JWT 이용 로그인
 - 관리자 페이지
 
 # 기술 스택
@@ -35,13 +34,14 @@
 ![EPRIS_ERD](https://github.com/user-attachments/assets/c01a89c2-a81a-4d88-8a8b-088e349c6071)
 
 # API명세서
-![로그인API](https://github.com/user-attachments/assets/d7685976-becb-4c59-8092-580a4c8d5632)
-![기수정보API](https://github.com/user-attachments/assets/726540d9-af7a-4da6-82a4-3540adb445ed)
-![모집정보API](https://github.com/user-attachments/assets/f841439e-6f5b-457c-abd3-37d71f7988b8)
-![그리팅카드API](https://github.com/user-attachments/assets/b227739d-b187-47b7-a897-e0a0e09e9812)
-![프로젝트API](https://github.com/user-attachments/assets/10a000e3-8d0c-4f06-8f17-482482521859)
-![로고API](https://github.com/user-attachments/assets/4891cce7-ab60-4a79-a18b-1becc73e30ff)
-![세션API](https://github.com/user-attachments/assets/3f59b86f-13fd-4544-8cbc-3f5c1c858e0e)
-![협력프로젝트API](https://github.com/user-attachments/assets/fe790955-fdbe-4029-92a7-4dcea0fd49d3)
-![네트워크API](https://github.com/user-attachments/assets/959d9e39-432a-418e-b3cf-8d58308851f7)
-![학회원API](https://github.com/user-attachments/assets/28aaaedf-1001-43d7-a2ec-5f440d1c5bd0)
+![로그인](https://github.com/user-attachments/assets/0235aeae-cbfd-4ea8-a6f1-7c606a24a649)
+![기수정보](https://github.com/user-attachments/assets/f340689e-4428-4c45-8775-f18c3ef0b6d1)
+![모집정보](https://github.com/user-attachments/assets/12a87fb9-351d-4a1e-9afc-da0e57530055)
+![그리팅카드](https://github.com/user-attachments/assets/a6fefc60-c083-4744-a090-1d1cea158209)
+![프로젝트](https://github.com/user-attachments/assets/fd6459ac-5412-4e5b-b819-888ed29156ce)
+![로고](https://github.com/user-attachments/assets/4babe7b7-69c3-47cf-975f-cd91f16c2a7b)
+![세션](https://github.com/user-attachments/assets/1234a0b3-e1fe-464e-9721-b5d71696acfd)
+![협력프로젝트](https://github.com/user-attachments/assets/0cf77e35-94b5-4aa1-9140-7bb97e697e79)
+![네트워크](https://github.com/user-attachments/assets/9cd69f41-31f1-483c-bdaa-a506235b29dd)
+![학회원](https://github.com/user-attachments/assets/05274081-5481-4a82-9d1d-730ff5993392)
+
