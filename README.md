@@ -2,25 +2,25 @@
 # 기능 설명
 이화여자대학교 pr 학회 epris 홈페이지 레포지토리입니다.
 
+배포한 홈페이지 보러가기 -> https://epris.or.kr/
 - pr 정보 확인
 - presigned url 이용 파일 업로드
 - Spring Security, JWT 이용 로그인
 - 관리자 페이지
 
 # 기술 스택
-|통합 개발 환경| IntelliJ                       |
+|통합 개발 환경| IntelliJ             |
 |---|--------------------------------|
-|Spring Boot 버전| 3.3.2                          |
-|데이터베이스| AWS RDS(MySQL)                 |
+|Spring Boot 버전| 3.3.2              |
+|데이터베이스| AWS RDS(MySQL)          |
 |배포| AWS EC2(Ubuntu),S3, CodeDeploy |
-|Project 빌드 관리 도구| Gradle                         |
-|CI/CD 툴| Github Actions                 |
-|ERD 다이어그램 툴| ERD Cloud                      |
-|Java version| Java 17                        |
+|Project 빌드 관리 도구| Gradle        |
+|CI/CD 툴| Github Actions             |
+|ERD 다이어그램 툴| ERD Cloud          |
+|Java version| Java 17                |
 
 # 기술 아키텍처
-
-(사진 추가 예정)
+![아키텍처구조도 drawio](https://github.com/user-attachments/assets/65f7e42e-a939-486f-b6b2-c95d13c500b0)
 
 # 팀원 소개 및 역할
 
